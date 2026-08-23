@@ -1,0 +1,6 @@
+arm-none-eabi-gcc -mcpu=cortex-m3 -mthumb -std=c11 -ffreestanding -fdata-sections -ffunction-sections -Wall -Wextra -Werror -Og -g3 main.c common/startup.c -nostdlib -Wl,--gc-sections -Wl,-T,common/linker.ld -Wl,-Map,lesson.map -o lesson.elf
+arm-none-eabi-size lesson.elf
+   text	   data	    bss	    dec	    hex	filename
+    160	      4	      4	    168	     a8	lesson.elf
+arm-none-eabi-objcopy -O binary lesson.elf lesson.bin
+34d7a181d96a4e95f297119a21c882b2e7dfab2d9afebf636a41ffcb3191e798 *lesson.elf
