@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug STM32F103 (OpenOCD)",
+      "cwd": "${workspaceFolder}",
+      "executable": "${workspaceFolder}/lesson.elf",
+      "request": "launch",
+      "type": "cortex-debug",
+      "servertype": "openocd",
+      "configFiles": [
+        "${workspaceFolder}/common/openocd/stm32f103_stlink.cfg"
+      ],
+      "runToEntryPoint": "main",
+      "preLaunchTask": "Build STM32F103",
+      "showDevDebugOutput": "none"
+    }
+  ]
+}

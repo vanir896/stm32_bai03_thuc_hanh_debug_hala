@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.ld": "plaintext"
+  },
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "cortex-debug.variableUseNaturalFormat": true
+}

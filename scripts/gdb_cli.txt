@@ -1,0 +1,14 @@
+# Start GDB from the project root:
+# arm-none-eabi-gdb -q lesson.elf
+
+set pagination off
+target extended-remote localhost:3333
+monitor reset halt
+break main
+continue
+info program
+info registers pc sp lr xpsr
+p/x &known_var
+p/x known_var
+x/wx &known_var
+disassemble main
