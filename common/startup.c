@@ -1,19 +1,53 @@
 #include <stdint.h>
-extern uint32_t _sidata, _sdata, _edata, _sbss, _ebss, _estack;
+
+typedef void (*isr_handler_t)(void);
+
+extern uint32_t _estack;
+extern uint32_t _sidata;
+extern uint32_t _sdata;
+extern uint32_t _edata;
+extern uint32_t _sbss;
+extern uint32_t _ebss;
+
 int main(void);
-void Default_Handler(void) { while (1) {} }
-void HardFault_Handler(void) { while (1) {} }
-void Reset_Handler(void) {
-    uint32_t *src = &_sidata, *dst = &_sdata;
-    while (dst < &_edata) { *dst++ = *src++; }
-    for (dst = &_sbss; dst < &_ebss; ) { *dst++ = 0u; }
-    (void)main();
-    while (1) {}
-}
-typedef void (*isr_t)(void);
+void Reset_Handler(void);
+void Default_Handler(void);
+
 __attribute__((section(".isr_vector"), used))
-const isr_t g_vectors[16] = {
-    (isr_t)&_estack, Reset_Handler, Default_Handler, HardFault_Handler,
-    Default_Handler, Default_Handler, Default_Handler, 0,
-    0, 0, 0, Default_Handler, Default_Handler, 0, Default_Handler, Default_Handler
+const uintptr_t vector_table[] = {
+    (uintptr_t)&_estack,
+    (uintptr_t)Reset_Handler,
 };
+
+static void runtime_copy_data(void)
+{
+    const uint32_t *src = &_sidata;
+    uint32_t *dst = &_sdata;
+    while (dst < &_edata) {
+        *dst++ = *src++;
+    }
+}
+
+static void runtime_clear_bss(void)
+{
+    uint32_t *dst = &_sbss;
+    while (dst < &_ebss) {
+        *dst++ = 0U;
+    }
+}
+
+void Reset_Handler(void)
+{
+    runtime_copy_data();
+    runtime_clear_bss();
+
+    (void)main();
+    for (;;) {
+    }
+}
+
+void Default_Handler(void)
+{
+    for (;;) {
+    }
+}
