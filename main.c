@@ -7,6 +7,6 @@ volatile uint32_t zero_buffer[4];
 int main(void)
 {
     for (;;) {
-        asm volatile ("nop");
+        __asm volatile ("nop");
     }
 }

@@ -1,0 +1,90 @@
+
+lesson.elf:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+08000008 <main>:
+volatile uint32_t zero_buffer[4];
+
+int main(void)
+{
+    for (;;) {
+        __asm volatile ("nop");
+ 8000008:	bf00      	nop
+    for (;;) {
+ 800000a:	e7fd      	b.n	8000008 <main>
+
+0800000c <runtime_copy_data>:
+};
+
+static void runtime_copy_data(void)
+{
+    const uint32_t *src = &_sidata;
+    uint32_t *dst = &_sdata;
+ 800000c:	4b05      	ldr	r3, [pc, #20]	; (8000024 <runtime_copy_data+0x18>)
+    const uint32_t *src = &_sidata;
+ 800000e:	4a06      	ldr	r2, [pc, #24]	; (8000028 <runtime_copy_data+0x1c>)
+    while (dst < &_edata) {
+ 8000010:	e003      	b.n	800001a <runtime_copy_data+0xe>
+        *dst++ = *src++;
+ 8000012:	f852 1b04 	ldr.w	r1, [r2], #4
+ 8000016:	f843 1b04 	str.w	r1, [r3], #4
+    while (dst < &_edata) {
+ 800001a:	4904      	ldr	r1, [pc, #16]	; (800002c <runtime_copy_data+0x20>)
+ 800001c:	428b      	cmp	r3, r1
+ 800001e:	d3f8      	bcc.n	8000012 <runtime_copy_data+0x6>
+    }
+}
+ 8000020:	4770      	bx	lr
+ 8000022:	bf00      	nop
+ 8000024:	20000000 	.word	0x20000000
+ 8000028:	08000060 	.word	0x08000060
+ 800002c:	20000004 	.word	0x20000004
+
+08000030 <runtime_clear_bss>:
+
+static void runtime_clear_bss(void)
+{
+    uint32_t *dst = &_sbss;
+ 8000030:	4b04      	ldr	r3, [pc, #16]	; (8000044 <runtime_clear_bss+0x14>)
+    while (dst < &_ebss) {
+ 8000032:	e002      	b.n	800003a <runtime_clear_bss+0xa>
+        *dst++ = 0U;
+ 8000034:	2200      	movs	r2, #0
+ 8000036:	f843 2b04 	str.w	r2, [r3], #4
+    while (dst < &_ebss) {
+ 800003a:	4a03      	ldr	r2, [pc, #12]	; (8000048 <runtime_clear_bss+0x18>)
+ 800003c:	4293      	cmp	r3, r2
+ 800003e:	d3f9      	bcc.n	8000034 <runtime_clear_bss+0x4>
+    }
+}
+ 8000040:	4770      	bx	lr
+ 8000042:	bf00      	nop
+ 8000044:	20000004 	.word	0x20000004
+ 8000048:	20000018 	.word	0x20000018
+
+0800004c <Reset_Handler>:
+
+void Reset_Handler(void)
+{
+ 800004c:	b508      	push	{r3, lr}
+    runtime_copy_data();
+ 800004e:	f7ff ffdd 	bl	800000c <runtime_copy_data>
+    runtime_clear_bss();
+ 8000052:	f7ff ffed 	bl	8000030 <runtime_clear_bss>
+
+    (void)main();
+ 8000056:	f7ff ffd7 	bl	8000008 <main>
+    for (;;) {
+ 800005a:	e7fe      	b.n	800005a <Reset_Handler+0xe>
+
+0800005c <Default_Handler>:
+    }
+}
+
+void Default_Handler(void)
+{
+    for (;;) {
+ 800005c:	e7fe      	b.n	800005c <Default_Handler>
+	...

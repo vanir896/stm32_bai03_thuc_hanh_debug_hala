@@ -1,0 +1,17 @@
+08000000 R vector_table
+08000008 T main
+08000008 T _stext
+0800000c t runtime_copy_data
+08000030 t runtime_clear_bss
+0800004c T Reset_Handler
+0800005c T Default_Handler
+08000060 T _etext
+08000060 A _sidata
+20000000 D initialized_value
+20000000 D _sdata
+20000004 D _edata
+20000004 B _sbss
+20000004 B zero_buffer
+20000014 B zero_value
+20000018 B _ebss
+20005000 R _estack

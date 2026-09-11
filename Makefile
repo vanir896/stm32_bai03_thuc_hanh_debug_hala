@@ -12,7 +12,7 @@ CFLAGS := -mcpu=cortex-m3 -mthumb -std=c11 -ffreestanding \
 LDFLAGS := -nostdlib -Wl,-T,$(COMMON)/linker.ld -Wl,-Map,$(TARGET).map
 
 # Danh sách mã nguồn
-SRCS := main.c math_ops.c $(COMMON)/startup.c
+SRCS := main.c $(COMMON)/startup.c
 
 # Tự động sinh danh sách file .o và .d
 OBJS := $(SRCS:.c=.o)
